@@ -10,6 +10,10 @@ import Reserve from './pages/Reserve';
 import Carte from './pages/Carte'
 import Pay from './pages/Pay';
 import Reserves from './pages/Reserves';
+import EditRestaurant from './pages/EditRestaurant';
+import EditTables from './pages/EditTables';
+import EditCarte from './pages/EditCarte';
+import Plates from './pages/Plates';
 
 function App() {
         return (
@@ -35,6 +39,14 @@ function App() {
                         element={<Pay/>} />
                 <Route  path='/Reserves'
                         element={<Reserves/>} />
+                <Route  path='/EditRestaurant'
+                        element={<EditRestaurant/>} />
+                <Route  path='/EditTables'
+                        element={<EditTables/>} />
+                <Route  path='/EditCarte'
+                        element={<EditCarte/>} />
+                <Route  path='/Plates'
+                        element={<Plates/>} />
         </Routes>
         </BrowserRouter>
         );
