@@ -14,6 +14,7 @@ import EditRestaurant from './pages/EditRestaurant';
 import EditTables from './pages/EditTables';
 import EditCarte from './pages/EditCarte';
 import Plates from './pages/Plates';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
         return (
