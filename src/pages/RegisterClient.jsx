@@ -1,20 +1,35 @@
 import React from "react";
+import { Container, Form, Button } from 'react-bootstrap';
 
 const RegisterClient = () => {
     return (
-        <>
-            <h2>Crea tu cuenta en MesaYa!</h2>
-            <form action="">
-                <input type="text" placeholder="Nombre"/>
-                <input type="text" placeholder="Apellido"/>
-                <input type="text" placeholder="Email"/>
-                <input type="text" placeholder="Telefono"/>
-                <input type="text" placeholder="Dirección"/>
-                <input type="password" placeholder="Contraseña"/>
-                <button>Registrarme</button>
-            </form>
-        </>
+        <Container className="mt-5">
+            <h2 className="text-center mb-4">Crea tu cuenta en MesaYa!</h2>
+            <Form>
+                <Form.Group className="mb-3">
+                    <Form.Control type="text" placeholder="Nombre" />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control type="text" placeholder="Apellido" />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control type="email" placeholder="Email" />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control type="tel" placeholder="Telefono" />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control type="text" placeholder="Dirección" />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Control type="password" placeholder="Contraseña" />
+                </Form.Group>
+                <div className="d-grid">
+                    <Button variant="primary" size="lg" type="submit">Registrarme</Button>
+                </div>
+            </Form>
+        </Container>
     )
 }
 
-export default RegisterClient
+export default RegisterClient;

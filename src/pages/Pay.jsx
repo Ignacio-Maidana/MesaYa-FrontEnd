@@ -1,19 +1,26 @@
 import React from "react";
+import { Container, Card, Button } from 'react-bootstrap';
 
 const Pay = () => {
     return (
-        <>
-            <h2>Tu Reserva</h2>
-            <h3>Restaurant - Nombre</h3>
-            <h3>Fecha: </h3>
-            <h3>Hora: </h3>
-            <h3>Nro Mesa: </h3>
-            <h3>Cantidad de personas: </h3>
-            <h3>Monto a Pagar:</h3>
-            <button>Pagar</button>
-            <button>Cancelar</button>
-        </>
+        <Container className="mt-5">
+            <Card>
+                <Card.Header as="h2">Tu Reserva</Card.Header>
+                <Card.Body>
+                    <Card.Title>Restaurant - Nombre del Restaurante</Card.Title>
+                    <Card.Text>
+                        <strong>Fecha:</strong> 01/01/2024<br />
+                        <strong>Hora:</strong> 20:00<br />
+                        <strong>Nro Mesa:</strong> 5<br />
+                        <strong>Cantidad de personas:</strong> 4<br />
+                        <strong>Monto a Pagar:</strong> $100.00
+                    </Card.Text>
+                    <Button variant="primary" className="me-2">Pagar</Button>
+                    <Button variant="secondary">Cancelar</Button>
+                </Card.Body>
+            </Card>
+        </Container>
     )
 }
 
-export default Pay
+export default Pay;

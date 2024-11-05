@@ -4,7 +4,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Table, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-// Simulación de datos de reservas
 const mockReservations = [
     { id: 1, name: 'Juan Perez', tableNumber: 5, people: 4, date: '2024-10-30', time: '12:00' },
     { id: 2, name: 'Ana Gomez', tableNumber: 3, people: 2, date: '2024-10-30', time: '14:00' },
@@ -17,7 +16,6 @@ const Reserves = () => {
     const [availableTimes, setAvailableTimes] = useState([]);
     const [filteredReservations, setFilteredReservations] = useState([]);
 
-    // Genera intervalos de media hora desde las 8:00 a.m. hasta las 11:00 p.m.
     const generateTimeSlots = () => {
         const times = [];
         let currentTime = new Date();
@@ -38,15 +36,13 @@ const Reserves = () => {
         setAvailableTimes(generateTimeSlots());
     }, []);
 
-    // Función para formatear la fecha seleccionada al formato 'YYYY-MM-DD'
     const formatSelectedDate = (date) => {
         return date ? date.toISOString().split('T')[0] : '';
     };
 
-    // Filtra reservas por fecha y hora seleccionadas
     useEffect(() => {
         if (selectedDate && selectedTime) {
-            const formattedDate = formatSelectedDate(selectedDate); // Formatea la fecha
+            const formattedDate = formatSelectedDate(selectedDate);
             const filtered = mockReservations.filter(
                 (reservation) => reservation.date === formattedDate && reservation.time === selectedTime
             );
@@ -62,7 +58,6 @@ const Reserves = () => {
             <h2 className="my-4">Ver Reservas del Restaurant</h2>
 
             <Row className="mb-3">
-                {/* Selección de fecha */}
                 <Col md={6}>
                     <Form.Label>Selecciona la fecha</Form.Label>
                     <DatePicker
@@ -74,7 +69,6 @@ const Reserves = () => {
                     />
                 </Col>
 
-                {/* Selección de horario */}
                 <Col md={6}>
                     <Form.Label>Horario</Form.Label>
                     <Form.Select 
@@ -89,42 +83,34 @@ const Reserves = () => {
                 </Col>
             </Row>
 
-            {/* Tabla de reservas */}
             <Table striped bordered hover className="mt-3">
                 <thead>
                     <tr>
                         <th>Nombre del Cliente</th>
                         <th>Número de Mesa</th>
                         <th>Cantidad de Personas</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredReservations.length > 0 ? (
-                        filteredReservations.map((reservation) => (
-                            <tr key={reservation.id}>
-                                <td>{reservation.name}</td>
-                                <td>{reservation.tableNumber}</td>
-                                <td>{reservation.people}</td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan={3} style={{ textAlign: 'center' }}>
-                                No hay reservas para la fecha y hora seleccionadas.
-                            </td>
+                    {filteredReservations.map((reservation) => (
+                        <tr key={reservation.id}>
+                            <td>{reservation.name}</td>
+                            <td>{reservation.tableNumber}</td>
+                            <td>{reservation.people}</td>
+                            <td>{reservation.date}</td>
+                            <td>{reservation.time}</td>
                         </tr>
-                    )}
+                    ))}
                 </tbody>
             </Table>
 
-            <Row className="mt-4">
-                <Col>
-                    <Link to="/EditRestaurant"><Button variant="primary" className="me-2">Editar Restaurant</Button></Link>
-                    <Link to="/EditTables"><Button variant="primary" className="me-2">Editar Mesas</Button></Link>
-                    <Link to="/EditCarte"><Button variant="primary" className="me-2">Editar Carta</Button></Link>
-                    <Link to="/Plates"><Button variant="primary">Platos</Button></Link>
-                </Col>
-            </Row>
+            <div className="mt-4">
+                <Link to="/EditRestaurant"><Button variant="primary" className="me-2">Editar Restaurant</Button></Link>
+                <Link to="/EditCarte"><Button variant="primary" className="me-2">Editar Carta</Button></Link>
+                <Link to="/EditTables"><Button variant="primary">Editar Mesas</Button></Link>
+            </div>
         </Container>
     );
 };

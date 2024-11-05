@@ -1,17 +1,23 @@
 import React from "react";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { Card, Button } from 'react-bootstrap';
 
 const RestaurantItem = () => {
-
     return (
-        <>
-            <img src="" alt="" />
-            <h3>Restaurante - Nombre</h3>
-            <strong>Dirección</strong>
-            <strong>Teléfono</strong>
-            <Link to='/Reserve'><button>Reservar</button></Link>
-        </>
+        <Card className="mb-3">
+            <Card.Img variant="top" src="placeholder-image.jpg" alt="Restaurant" />
+            <Card.Body>
+                <Card.Title>Restaurante - Nombre</Card.Title>
+                <Card.Text>
+                    <strong>Dirección</strong><br />
+                    <strong>Teléfono</strong>
+                </Card.Text>
+                <Link to='/Reserve'>
+                    <Button variant="primary">Reservar</Button>
+                </Link>
+            </Card.Body>
+        </Card>
     )
 }
 
-export default RestaurantItem
+export default RestaurantItem;
