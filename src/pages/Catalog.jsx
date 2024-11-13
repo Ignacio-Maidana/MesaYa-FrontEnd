@@ -6,26 +6,7 @@ const Catalog = () => {
     return (
         <Container>
             <h2 className="my-4">Restaurantes disponibles!</h2>
-            <Row>
-                <Col md={4}>
-                    <RestaurantItem />
-                </Col>
-                <Col md={4}>
-                    <RestaurantItem />
-                </Col>
-                <Col md={4}>
-                    <RestaurantItem />
-                </Col>
-                <Col md={4}>
-                    <RestaurantItem />
-                </Col>
-                <Col md={4}>
-                    <RestaurantItem />
-                </Col>
-                <Col md={4}>
-                    <RestaurantItem />
-                </Col>
-            </Row>
+            <RestaurantItem />
         </Container>
     )
 }

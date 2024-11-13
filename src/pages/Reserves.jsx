@@ -15,6 +15,7 @@ const Reserves = () => {
     const [selectedTime, setSelectedTime] = useState('');
     const [availableTimes, setAvailableTimes] = useState([]);
     const [filteredReservations, setFilteredReservations] = useState([]);
+    const [restaurantId, setRestaurantId] = useState(null); // Asegúrate de tener el ID del restaurante
 
     const generateTimeSlots = () => {
         const times = [];
@@ -46,7 +47,6 @@ const Reserves = () => {
             const filtered = mockReservations.filter(
                 (reservation) => reservation.date === formattedDate && reservation.time === selectedTime
             );
-
             setFilteredReservations(filtered);
         } else {
             setFilteredReservations([]);
@@ -107,9 +107,10 @@ const Reserves = () => {
             </Table>
 
             <div className="mt-4">
-                <Link to="/EditRestaurant"><Button variant="primary" className="me-2">Editar Restaurant</Button></Link>
+                <Link to={`/EditRestaurant/${restaurantId}`}><Button variant="primary" className="me-2">Editar Restaurant</Button></Link>
                 <Link to="/EditCarte"><Button variant="primary" className="me-2">Editar Carta</Button></Link>
-                <Link to="/EditTables"><Button variant="primary">Editar Mesas</Button></Link>
+                <Link to="/EditTables"><Button variant="primary" className='me-2'>Editar Mesas</Button></Link>
+                <Link to="/Plates"><Button variant="primary" className='me-2'>Platos</Button></Link>
             </div>
         </Container>
     );
