@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button } from 'react-bootstrap';
+import API_BASE_URL from '../config';
 
 const RegisterRestaurant = () => {
 
@@ -27,7 +28,7 @@ const RegisterRestaurant = () => {
     
         try {
             // Crear el restaurante y obtener el ID de la respuesta
-            const restaurantResponse = await axios.post('http://localhost:8000/api/restaurants', {
+            const restaurantResponse = await axios.post(`${API_BASE_URL}/restaurants`, {
                 nombre,
                 email,
                 direccion,
@@ -51,7 +52,7 @@ const RegisterRestaurant = () => {
                 formData.append('imagen', imagen);
     
                 // Subir la imagen usando el ID del restaurante
-                await axios.post(`http://localhost:8000/api/restaurants/${restaurantId}/upload-image`, formData, {
+                await axios.post(`${API_BASE_URL}/restaurants/${restaurantId}/upload-image`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

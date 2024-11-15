@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Container, Form, Button, Image } from 'react-bootstrap';
+import API_BASE_URL from '../config';
 
 const EditRestaurant = () => {
     const [nombre, setNombre] = useState('');
@@ -20,7 +21,7 @@ const EditRestaurant = () => {
     useEffect(() => {
         const fetchRestaurantData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/restaurants/${id}`);
+                const response = await axios.get(`${API_BASE_URL}/restaurants/${id}`);
                 const restaurant = response.data;
 
                 setNombre(restaurant.nombre);
@@ -47,7 +48,7 @@ const EditRestaurant = () => {
 
         try {
             // Actualizar la información del restaurante
-            await axios.put(`http://localhost:8000/api/restaurants/${id}`, {
+            await axios.put(`${API_BASE_URL}/restaurants/${id}`, {
                 nombre,
                 email,
                 direccion,
@@ -62,7 +63,7 @@ const EditRestaurant = () => {
                 const formData = new FormData();
                 formData.append('imagen', imagen);
 
-                await axios.post(`http://localhost:8000/api/restaurants/${id}/upload-image`, formData, {
+                await axios.post(`${API_BASE_URL}/restaurants/${id}/upload-image`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

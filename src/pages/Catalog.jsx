@@ -1,6 +1,6 @@
 import React from "react";
 import RestaurantItem from "../components/RestaurantItem";
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 const Catalog = () => {
     return (

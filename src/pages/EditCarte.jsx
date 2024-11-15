@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Container, Nav, Card, Button, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import API_BASE_URL from '../config';
 
 const EditCarte = () => {
     const [platos, setPlatos] = useState([]);
 
     useEffect(() => {
-        // Llama a la API para obtener las categorías y los platos
         const fetchDishesAndCategories = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/api/platos"); // Cambia la URL según tu API
-                console.log(response.data); // Verifica la estructura de datos
+                const response = await axios.get(`${API_BASE_URL}/platos`);
                 setPlatos(response.data);
             } catch (error) {
                 console.error("Error al obtener los platos y categorías", error);
@@ -22,8 +21,8 @@ const EditCarte = () => {
 
     const handleDelete = async (platoId) => {
         try {
-            await axios.delete(`http://localhost:8000/api/platos/${platoId}`); // Cambia la URL según tu API
-            setPlatos(platos.filter(plato => plato.idPlato !== platoId)); // Ajusta `dish.id` si el campo de ID es diferente
+            await axios.delete(`${API_BASE_URL}/platos/${platoId}`);
+            setPlatos(platos.filter(plato => plato.idPlato !== platoId));
         } catch (error) {
             console.error("Error al eliminar el plato", error);
         }

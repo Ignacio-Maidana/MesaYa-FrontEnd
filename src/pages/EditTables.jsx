@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import API_BASE_URL from '../config';
 
 const EditTables = () => {
     const [mesas, setMesas] = useState([]);
@@ -15,7 +16,7 @@ const EditTables = () => {
     useEffect(() => {
         const fetchMesas = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/api/mesas");
+                const response = await axios.get(`${API_BASE_URL}/mesas`);
                 setMesas(response.data);
             } catch (error) {
                 console.error("Error al obtener las mesas:", error);
@@ -58,12 +59,12 @@ const EditTables = () => {
             };
     
             if (isAddingNew) {
-                await axios.post("http://localhost:8000/api/mesas", mesaData);
+                await axios.post(`${API_BASE_URL}/mesas`, mesaData);
             } else if (mesaSeleccionada) {
-                await axios.put(`http://localhost:8000/api/mesas/${mesaSeleccionada.idMesa}`, mesaData);
+                await axios.put(`${API_BASE_URL}/mesas/${mesaSeleccionada.idMesa}`, mesaData);
             }
     
-            const response = await axios.get("http://localhost:8000/api/mesas");
+            const response = await axios.get(`${API_BASE_URL}/mesas`);
             setMesas(response.data);
             handleReset();
         } catch (error) {
@@ -76,9 +77,9 @@ const EditTables = () => {
     const handleDeleteMesa = async () => {
         try {
             if (mesaSeleccionada) {
-                await axios.delete(`http://localhost:8000/api/mesas/${mesaSeleccionada.idMesa}`);
+                await axios.delete(`${API_BASE_URL}/mesas/${mesaSeleccionada.idMesa}`);
                 // Recargar las mesas después de eliminar
-                const response = await axios.get("http://localhost:8000/api/mesas");
+                const response = await axios.get(`${API_BASE_URL}/mesas`);
                 setMesas(response.data);
                 handleReset();
             }

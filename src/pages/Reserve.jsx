@@ -2,9 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import TableLayout from '../components/TableLayout'
+import TableLayout from '../components/TableLayout';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import axios from 'axios';
+import API_BASE_URL from '../config';
 
 const Reserve = () => {
     const [selectedDate, setSelectedDate] = useState(null);
@@ -54,6 +56,20 @@ const Reserve = () => {
         setSelectedTable(null);
     };
 
+    const handleConfirmReservation = async () => {
+        try {
+            await axios.post(`${API_BASE_URL}/reservas`, {
+                fecha: selectedDate,
+                hora: selectedTime,
+                idMesa: selectedTable.idMesa,
+                // Agrega otros datos necesarios para la reserva
+            });
+            // Maneja la confirmación de la reserva (e.g., redirigir a otra página)
+        } catch (error) {
+            console.error('Error al confirmar la reserva:', error);
+        }
+    };
+
     return (
         <Container>
             <Row className="mt-5">
@@ -93,14 +109,12 @@ const Reserve = () => {
 
             {selectedTable && (
                 <div className="position-fixed top-0 end-0 p-4 bg-light" style={{width: '300px', height: '100%', boxShadow: '-2px 0 5px rgba(0,0,0,0.1)'}}>
-                    <h3>Detalles de la Mesa {selectedTable.tableNumber}</h3>
+                    <h3>Detalles de la Mesa {selectedTable.numero}</h3>
                     <p><strong>Fecha:</strong> {selectedDate ? selectedDate.toLocaleDateString() : 'No seleccionada'}</p>
                     <p><strong>Horario:</strong> {selectedTime || 'No seleccionado'}</p>
                     <p><strong>Pago:</strong> Pendiente</p>
                     <Button variant="secondary" onClick={closeAside} className="me-2">Cerrar</Button>
-                    <Link to='/Pay'>
-                        <Button variant="primary">Confirmar</Button>
-                    </Link>
+                    <Button variant="primary" onClick={handleConfirmReservation}>Confirmar</Button>
                 </div>
             )}
         </Container>

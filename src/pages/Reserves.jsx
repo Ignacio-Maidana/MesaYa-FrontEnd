@@ -3,12 +3,8 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { Table, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
-const mockReservations = [
-    { id: 1, name: 'Juan Perez', tableNumber: 5, people: 4, date: '2024-10-30', time: '12:00' },
-    { id: 2, name: 'Ana Gomez', tableNumber: 3, people: 2, date: '2024-10-30', time: '14:00' },
-    { id: 3, name: 'Carlos Lopez', tableNumber: 7, people: 6, date: '2024-10-30', time: '18:30' },
-];
+import axios from 'axios';
+import API_BASE_URL from '../config';
 
 const Reserves = () => {
     const [selectedDate, setSelectedDate] = useState(null);
@@ -43,11 +39,22 @@ const Reserves = () => {
 
     useEffect(() => {
         if (selectedDate && selectedTime) {
-            const formattedDate = formatSelectedDate(selectedDate);
-            const filtered = mockReservations.filter(
-                (reservation) => reservation.date === formattedDate && reservation.time === selectedTime
-            );
-            setFilteredReservations(filtered);
+            const fetchReservations = async () => {
+                try {
+                    const formattedDate = formatSelectedDate(selectedDate);
+                    const response = await axios.get(`${API_BASE_URL}/reservas`, {
+                        params: {
+                            fecha: formattedDate,
+                            hora: selectedTime,
+                        },
+                    });
+                    setFilteredReservations(response.data);
+                } catch (error) {
+                    console.error('Error al obtener las reservas:', error);
+                }
+            };
+
+            fetchReservations();
         } else {
             setFilteredReservations([]);
         }
@@ -96,11 +103,11 @@ const Reserves = () => {
                 <tbody>
                     {filteredReservations.map((reservation) => (
                         <tr key={reservation.id}>
-                            <td>{reservation.name}</td>
-                            <td>{reservation.tableNumber}</td>
-                            <td>{reservation.people}</td>
-                            <td>{reservation.date}</td>
-                            <td>{reservation.time}</td>
+                            <td>{reservation.nombreCliente}</td>
+                            <td>{reservation.numeroMesa}</td>
+                            <td>{reservation.cantidadPersonas}</td>
+                            <td>{reservation.fecha}</td>
+                            <td>{reservation.hora}</td>
                         </tr>
                     ))}
                 </tbody>

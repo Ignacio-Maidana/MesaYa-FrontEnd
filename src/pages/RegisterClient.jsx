@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button } from 'react-bootstrap';
+import API_BASE_URL from '../config';
 
 const RegisterClient = () => {
-
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [email, setEmail] = useState('');
@@ -17,10 +17,10 @@ const RegisterClient = () => {
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
-        e.preventDefault(); // Evita el comportamiento por defecto del formulario
+        e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8000/api/clientes', {
+            const response = await axios.post(`${API_BASE_URL}/clientes`, {
                 nombre,
                 apellido,
                 email,
@@ -30,8 +30,7 @@ const RegisterClient = () => {
                 localidad,
                 provincia
             });
-            // Aquí podrías redirigir al usuario a otra página después de registrarse
-            navigate('/LogInClient'); // Redirige a la página de inicio de sesión
+            navigate('/LogInClient');
         } catch (error) {
             setError(error.response ? error.response.data : 'Error al registrarse');
         }
@@ -71,7 +70,7 @@ const RegisterClient = () => {
             </Form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </Container>
-    )
+    );
 }
 
 export default RegisterClient;

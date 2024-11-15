@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
+import API_BASE_URL from "../config";
 
 const RestaurantItem = () => {
     const [restaurants, setRestaurants] = useState([]);
 
     useEffect(() => {
-        // Llama al backend para obtener todos los restaurantes
         const fetchRestaurants = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/api/restaurants");
-                setRestaurants(response.data); // Actualiza el estado con los datos de los restaurantes
+                const response = await axios.get(`${API_BASE_URL}/restaurants`);
+                setRestaurants(response.data);
             } catch (error) {
                 console.error("Error al obtener los restaurantes:", error);
             }
