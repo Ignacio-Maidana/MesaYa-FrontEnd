@@ -10,19 +10,21 @@ const EditTables = () => {
     const [estadoMesa, setEstadoMesa] = useState("Desocupado"); // Estado por defecto para nueva mesa
     const [cantidadPersonas, setCantidadPersonas] = useState("");
     const [isAddingNew, setIsAddingNew] = useState(true);
+    const [error, setError] = useState(null);
+    const restaurantId = localStorage.getItem('restaurantId'); // Obtener el ID del restaurante del localStorage
 
-    // Cargar todas las mesas desde el backend al cargar el componente
+    // Cargar todas las mesas del restaurante desde el backend al cargar el componente
     useEffect(() => {
         const fetchMesas = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/api/mesas");
+                const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}/mesas`);
                 setMesas(response.data);
             } catch (error) {
                 console.error("Error al obtener las mesas:", error);
             }
         };
         fetchMesas();
-    }, []);
+    }, [restaurantId]);
 
     // Manejar la selección de una mesa en el <select>
     const handleSelectMesa = (e) => {
@@ -36,7 +38,6 @@ const EditTables = () => {
                 setEstadoMesa(mesa.estado);
                 setCantidadPersonas(mesa.cantidadPersonas);
                 setIsAddingNew(false);
-                console.log("Mesa seleccionada:", mesa);
             }
         } else {
             // Si no hay mesa seleccionada, limpiar los campos
@@ -49,28 +50,33 @@ const EditTables = () => {
     };
 
     const handleSaveMesa = async () => {
+        // Validar que el número de mesa y la cantidad de personas sean mayores que 0
+        if (numeroMesa <= 0 || cantidadPersonas <= 0) {
+            setError("El número de mesa y la cantidad de personas deben ser mayores que 0.");
+            return;
+        }
+
         try {
             const mesaData = {
-                idMesa: mesaSeleccionada ? mesaSeleccionada.idMesa : undefined,  // Agrega idMesa si es una actualización
                 numero: parseInt(numeroMesa, 10),
                 estado: estadoMesa,
                 cantidadPersonas: parseInt(cantidadPersonas, 10),
+                idRestaurant: restaurantId // Vincular la mesa con el restaurante logueado
             };
-    
+
             if (isAddingNew) {
                 await axios.post("http://localhost:8000/api/mesas", mesaData);
             } else if (mesaSeleccionada) {
                 await axios.put(`http://localhost:8000/api/mesas/${mesaSeleccionada.idMesa}`, mesaData);
             }
-    
-            const response = await axios.get("http://localhost:8000/api/mesas");
+
+            const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}/mesas`);
             setMesas(response.data);
             handleReset();
         } catch (error) {
             console.error("Error al guardar la mesa:", error);
         }
     };
-    
 
     // Eliminar la mesa seleccionada
     const handleDeleteMesa = async () => {
@@ -78,7 +84,7 @@ const EditTables = () => {
             if (mesaSeleccionada) {
                 await axios.delete(`http://localhost:8000/api/mesas/${mesaSeleccionada.idMesa}`);
                 // Recargar las mesas después de eliminar
-                const response = await axios.get("http://localhost:8000/api/mesas");
+                const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}/mesas`);
                 setMesas(response.data);
                 handleReset();
             }
@@ -94,6 +100,7 @@ const EditTables = () => {
         setEstadoMesa("Desocupado"); // Estado por defecto
         setCantidadPersonas("");
         setIsAddingNew(true);
+        setError(null);
     };
 
     return (
@@ -116,6 +123,7 @@ const EditTables = () => {
                         type="number"
                         value={numeroMesa}
                         onChange={(e) => setNumeroMesa(e.target.value)}
+                        min="1" // Asegura que el valor mínimo sea 1
                     />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -132,8 +140,10 @@ const EditTables = () => {
                         type="number"
                         value={cantidadPersonas}
                         onChange={(e) => setCantidadPersonas(e.target.value)}
+                        min="1" // Asegura que el valor mínimo sea 1
                     />
                 </Form.Group>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
                 <Button variant="primary" className="me-2" onClick={handleSaveMesa}>
                     {isAddingNew ? "Agregar Nueva Mesa" : "Guardar Cambios"}
                 </Button>

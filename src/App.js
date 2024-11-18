@@ -14,6 +14,7 @@ import EditRestaurant from './pages/EditRestaurant';
 import EditTables from './pages/EditTables';
 import EditCarte from './pages/EditCarte';
 import Plates from './pages/Plates';
+import Drinks from './pages/Drinks'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -38,9 +39,9 @@ function App() {
                         element={<Carte/>} />
                 <Route  path='/Pay'
                         element={<Pay/>} />
-                <Route  path='/Reserves'
+                <Route  path='/Reserves/'
                         element={<Reserves/>} />
-                <Route  path='/EditRestaurant/:id'
+                <Route  path='/EditRestaurant/'
                         element={<EditRestaurant/>} />
                 <Route  path='/EditTables'
                         element={<EditTables/>} />
@@ -48,6 +49,8 @@ function App() {
                         element={<EditCarte/>} />
                 <Route  path='/Plates'
                         element={<Plates/>} />
+                <Route  path='/Drinks'
+                        element={<Drinks/>} />
         </Routes>
         </BrowserRouter>
         );

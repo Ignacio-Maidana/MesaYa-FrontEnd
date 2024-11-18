@@ -3,19 +3,36 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { Table, Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
-const mockReservations = [
-    { id: 1, name: 'Juan Perez', tableNumber: 5, people: 4, date: '2024-10-30', time: '12:00' },
-    { id: 2, name: 'Ana Gomez', tableNumber: 3, people: 2, date: '2024-10-30', time: '14:00' },
-    { id: 3, name: 'Carlos Lopez', tableNumber: 7, people: 6, date: '2024-10-30', time: '18:30' },
-];
+import axios from 'axios';
 
 const Reserves = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState('');
     const [availableTimes, setAvailableTimes] = useState([]);
     const [filteredReservations, setFilteredReservations] = useState([]);
-    const [restaurantId, setRestaurantId] = useState(null); // Asegúrate de tener el ID del restaurante
+    const [restaurantId, setRestaurantId] = useState(null);
+    const [reservations, setReservations] = useState([]);
+
+    useEffect(() => {
+        // Obtener el ID del restaurante del localStorage
+        const id = localStorage.getItem('restaurantId');
+        setRestaurantId(id);
+
+        // Función para obtener las reservas del restaurante específico
+        const fetchReservations = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/restaurants/${id}/reservas`);
+                setReservations(response.data);
+                setFilteredReservations(response.data); // Para mantener la lista inicial
+            } catch (error) {
+                console.error("Error al obtener las reservas:", error);
+            }
+        };
+
+        if (id) {
+            fetchReservations();
+        }
+    }, []);
 
     const generateTimeSlots = () => {
         const times = [];
@@ -42,16 +59,18 @@ const Reserves = () => {
     };
 
     useEffect(() => {
-        if (selectedDate && selectedTime) {
+        if (selectedDate && selectedTime && reservations.length > 0) {
             const formattedDate = formatSelectedDate(selectedDate);
-            const filtered = mockReservations.filter(
-                (reservation) => reservation.date === formattedDate && reservation.time === selectedTime
+            const filtered = reservations.filter(
+                (reservation) => 
+                    reservation.fecha === formattedDate && 
+                    reservation.horario === selectedTime
             );
             setFilteredReservations(filtered);
         } else {
-            setFilteredReservations([]);
+            setFilteredReservations(reservations);
         }
-    }, [selectedDate, selectedTime]);
+    }, [selectedDate, selectedTime, reservations]);
 
     return (
         <Container>
@@ -95,22 +114,23 @@ const Reserves = () => {
                 </thead>
                 <tbody>
                     {filteredReservations.map((reservation) => (
-                        <tr key={reservation.id}>
-                            <td>{reservation.name}</td>
-                            <td>{reservation.tableNumber}</td>
-                            <td>{reservation.people}</td>
-                            <td>{reservation.date}</td>
-                            <td>{reservation.time}</td>
+                        <tr key={reservation.idReserva}>
+                            <td>{reservation.Cliente.nombre}</td>
+                            <td>{reservation.Mesa.numero}</td>
+                            <td>{reservation.Mesa.cantidadPersonas}</td>
+                            <td>{reservation.fecha}</td>
+                            <td>{reservation.horario}</td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
 
             <div className="mt-4">
-                <Link to={`/EditRestaurant/${restaurantId}`}><Button variant="primary" className="me-2">Editar Restaurant</Button></Link>
+                <Link to={`/EditRestaurant`}><Button variant="primary" className="me-2">Editar Restaurant</Button></Link>
                 <Link to="/EditCarte"><Button variant="primary" className="me-2">Editar Carta</Button></Link>
                 <Link to="/EditTables"><Button variant="primary" className='me-2'>Editar Mesas</Button></Link>
                 <Link to="/Plates"><Button variant="primary" className='me-2'>Platos</Button></Link>
+                <Link to="/Drinks"><Button variant="primary" className='me-2'>Bebidas</Button></Link>
             </div>
         </Container>
     );

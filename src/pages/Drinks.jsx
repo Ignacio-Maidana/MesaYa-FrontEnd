@@ -3,29 +3,28 @@ import { Link } from "react-router-dom";
 import { Container, Form, Button, InputGroup } from 'react-bootstrap';
 import axios from "axios";
 
-const Plates = () => {
-    const [platos, setPlatos] = useState([]);
-    const [platoSeleccionado, setPlatoSeleccionado] = useState(null);
+const Drinks = () => {
+    const [bebidas, setBebidas] = useState([]);
+    const [bebidaSeleccionada, setBebidaSeleccionada] = useState(null);
     const [busqueda, setBusqueda] = useState('');
     const [nombre, setNombre] = useState('');
     const [precio, setPrecio] = useState('');
     const [descripcion, setDescripcion] = useState('');
-    const [categoria, setCategoria] = useState('');
     const [isAddingNew, setIsAddingNew] = useState(false);
     const [isSearchDisabled, setIsSearchDisabled] = useState(false); // Nuevo estado para manejar el campo de búsqueda
     const restaurantId = localStorage.getItem('restaurantId'); // Obtener el ID del restaurante del localStorage
 
-    // Obtener todos los platos del restaurante al montar el componente
+    // Obtener todas las bebidas del restaurante al montar el componente
     useEffect(() => {
-        const fetchPlatos = async () => {
+        const fetchBebidas = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}/platos`);
-                setPlatos(response.data);
+                const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}/bebidas`);
+                setBebidas(response.data);
             } catch (error) {
-                console.error('Error al obtener los platos:', error);
+                console.error('Error al obtener las bebidas:', error);
             }
         };
-        fetchPlatos();
+        fetchBebidas();
     }, [restaurantId]);
 
     // Manejar la búsqueda en tiempo real
@@ -34,80 +33,77 @@ const Plates = () => {
         setIsAddingNew(false); // Resetea el modo de "agregar nuevo" cuando se busca
     };
 
-    // Filtrar platos según la búsqueda
-    const platosFiltrados = platos.filter((plato) =>
-        plato.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    // Filtrar bebidas según la búsqueda
+    const bebidasFiltradas = bebidas.filter((bebida) =>
+        bebida.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    // Manejar la selección de un plato
-    const handleSelectPlato = (plato) => {
-        setPlatoSeleccionado(plato);
-        setNombre(plato.nombre);
-        setPrecio(plato.precio);
-        setDescripcion(plato.descripcion);
-        setCategoria(plato.categoria);
+    // Manejar la selección de una bebida
+    const handleSelectBebida = (bebida) => {
+        setBebidaSeleccionada(bebida);
+        setNombre(bebida.nombre);
+        setPrecio(bebida.precio);
+        setDescripcion(bebida.descripcion);
         setIsAddingNew(false);
     };
 
-    // Preparar el formulario para agregar un nuevo plato
+    // Preparar el formulario para agregar una nueva bebida
     const handleAgregarNuevo = () => {
-        setPlatoSeleccionado(null);
+        setBebidaSeleccionada(null);
         setNombre('');
         setPrecio('');
         setDescripcion('');
-        setCategoria('');
         setIsAddingNew(true);
         setIsSearchDisabled(true); // Deshabilitar el campo de búsqueda
     };
 
-    // Cancelar la acción de agregar nuevo plato
+    // Cancelar la acción de agregar nueva bebida
     const handleCancelar = () => {
         setIsAddingNew(false);
         setIsSearchDisabled(false); // Habilitar el campo de búsqueda
         setBusqueda(''); // Limpiar el campo de búsqueda
     };
 
-    // Guardar o actualizar plato
+    // Guardar o actualizar bebida
     const handleGuardar = async () => {
         try {
-            const platoData = {
+            const bebidaData = {
                 nombre,
                 precio,
                 descripcion,
-                categoria,
-                idRestaurant: restaurantId // Vincular el plato con el restaurante logueado
+                idRestaurant: restaurantId // Vincular la bebida con el restaurante logueado
             };
 
             if (isAddingNew) {
-                // Agregar nuevo plato
-                await axios.post('http://localhost:8000/api/platos', platoData);
-            } else if (platoSeleccionado) {
-                // Actualizar plato existente
-                await axios.put(`http://localhost:8000/api/platos/${platoSeleccionado.idPlato}`, platoData);
+                // Agregar nueva bebida
+                await axios.post('http://localhost:8000/api/bebidas', bebidaData);
+            } else if (bebidaSeleccionada) {
+                // Actualizar bebida existente
+                await axios.put(`http://localhost:8000/api/bebidas/${bebidaSeleccionada.idBebida}`, bebidaData);
             }
 
-            // Recargar la lista de platos después de guardar
-            const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}/platos`);
-            setPlatos(response.data);
+            // Recargar la lista de bebidas después de guardar
+            const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}/bebidas`);
+            setBebidas(response.data);
             // Resetear el formulario después de guardar
             handleAgregarNuevo();
         } catch (error) {
-            console.error('Error al guardar el plato:', error);
+            console.error('Error al guardar la bebida:', error);
         }
     };
 
-    // Eliminar el plato seleccionado
-    const handleDeletePlato = async () => {
+    // Eliminar la bebida seleccionada
+    const handleDeleteBebida = async () => {
         try {
-            if (platoSeleccionado) {
-                await axios.delete(`http://localhost:8000/api/platos/${platoSeleccionado.idPlato}`);
-                // Recargar los platos después de eliminar
-                const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}/platos`);
-                setPlatos(response.data);
+            if (bebidaSeleccionada) {
+                await axios.delete(`http://localhost:8000/api/bebidas/${bebidaSeleccionada.idBebida}`);
+                // Recargar las bebidas después de eliminar
+                const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}/bebidas`);
+                setBebidas(response.data);
                 handleAgregarNuevo();
             }
         } catch (error) {
-            console.error("Error al eliminar el plato:", error);
+            console.error("Error al eliminar la bebida:", error);
         }
     };
 
@@ -116,10 +112,10 @@ const Plates = () => {
             <InputGroup className="mb-3">
                 <Form.Control
                     type="text"
-                    placeholder="Plato"
+                    placeholder="Bebida"
                     value={busqueda}
                     onChange={handleBusquedaChange}
-                    disabled={isSearchDisabled} // Deshabilitar el campo de búsqueda si se está agregando un nuevo plato
+                    disabled={isSearchDisabled} // Deshabilitar el campo de búsqueda si se está agregando una nueva bebida
                 />
                 <Button variant="outline-secondary" onClick={isAddingNew ? handleCancelar : handleAgregarNuevo}>
                     {isAddingNew ? 'Cancelar' : 'Agregar'}
@@ -127,13 +123,13 @@ const Plates = () => {
             </InputGroup>
             {busqueda && (
                 <ul>
-                    {platosFiltrados.map((plato) => (
+                    {bebidasFiltradas.map((bebida) => (
                         <li
-                            key={plato.idPlato}
-                            onClick={() => handleSelectPlato(plato)}
+                            key={bebida.idBebida}
+                            onClick={() => handleSelectBebida(bebida)}
                             style={{ cursor: 'pointer' }}
                         >
-                            {plato.nombre}
+                            {bebida.nombre}
                         </li>
                     ))}
                 </ul>
@@ -163,20 +159,12 @@ const Plates = () => {
                         onChange={(e) => setDescripcion(e.target.value)}
                     />
                 </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control
-                        type="text"
-                        placeholder="Categoría"
-                        value={categoria}
-                        onChange={(e) => setCategoria(e.target.value)}
-                    />
-                </Form.Group>
                 <Button variant="primary" className="me-2" onClick={handleGuardar}>
                     {isAddingNew ? 'Agregar Nuevo' : 'Guardar'}
                 </Button>
                 {!isAddingNew && (
-                    <Button variant="danger" className="me-2" onClick={handleDeletePlato}>
-                        Eliminar Plato
+                    <Button variant="danger" className="me-2" onClick={handleDeleteBebida}>
+                        Eliminar Bebida
                     </Button>
                 )}
                 <Link to="/Reserves">
@@ -187,4 +175,4 @@ const Plates = () => {
     );
 }
 
-export default Plates;
+export default Drinks;

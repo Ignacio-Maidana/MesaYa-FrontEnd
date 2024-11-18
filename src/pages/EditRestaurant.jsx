@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Container, Form, Button, Image } from 'react-bootstrap';
 
 const EditRestaurant = () => {
@@ -14,13 +14,13 @@ const EditRestaurant = () => {
     const [imagen, setImagen] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const { id } = useParams(); // Suponiendo que pasas el ID del restaurante en la URL como parámetro
+    const restaurantId = localStorage.getItem('restaurantId'); // Obtener el ID del restaurante del localStorage
 
     // Cargar la información del restaurante cuando el componente se monta
     useEffect(() => {
         const fetchRestaurantData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/restaurants/${id}`);
+                const response = await axios.get(`http://localhost:8000/api/restaurants/${restaurantId}`);
                 const restaurant = response.data;
 
                 setNombre(restaurant.nombre);
@@ -36,7 +36,7 @@ const EditRestaurant = () => {
             }
         };
         fetchRestaurantData();
-    }, [id]);
+    }, [restaurantId]);
 
     const handleImageChange = (e) => {
         setImagen(e.target.files[0]);
@@ -44,32 +44,46 @@ const EditRestaurant = () => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-
+    
         try {
-            // Actualizar la información del restaurante
-            await axios.put(`http://localhost:8000/api/restaurants/${id}`, {
+            // Extraer solo el nombre del archivo de la URL completa
+            const imageName = typeof imagen === 'string' 
+                ? imagen.split('/').pop() // Obtiene solo el nombre del archivo de la URL
+                : null;
+    
+            // Crear el objeto de datos a actualizar
+            const updateData = {
+                idRestaurant: parseInt(restaurantId, 10),
                 nombre,
                 email,
                 direccion,
-                contraseña,
                 telefono,
                 categoria,
-                cuit
-            });
-
+                cuit,
+                imagen: imageName
+            };
+    
+            // Solo incluir la contraseña si se ha modificado
+            if (contraseña) {
+                updateData.contraseña = contraseña;
+            }
+    
+            // Actualizar la información del restaurante
+            await axios.put(`http://localhost:8000/api/restaurants/${restaurantId}`, updateData);
+    
             // Si hay una nueva imagen, la subimos
-            if (imagen) {
+            if (imagen && typeof imagen !== 'string') {
                 const formData = new FormData();
                 formData.append('imagen', imagen);
-
-                await axios.post(`http://localhost:8000/api/restaurants/${id}/upload-image`, formData, {
+    
+                await axios.post(`http://localhost:8000/api/restaurants/${restaurantId}/upload-image`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
             }
-
-            navigate('/Reserves'); // Redirige a la página de reservas
+    
+            navigate('/Reserves');
         } catch (error) {
             setError("Error al actualizar la información del restaurante.");
             console.error("Error al actualizar el restaurante:", error);
@@ -90,6 +104,7 @@ const EditRestaurant = () => {
                     <Form.Control type="text" placeholder="Dirección" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
+                <Form.Label>Contraseña (dejar en blanco para mantener la actual)</Form.Label>
                     <Form.Control type="password" placeholder="Contraseña" value={contraseña} onChange={(e) => setContraseña(e.target.value)} />
                 </Form.Group>
                 <Form.Group className="mb-3">

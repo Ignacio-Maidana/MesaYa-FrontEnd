@@ -12,8 +12,6 @@ const RegisterRestaurant = () => {
     const [telefono, setTelefono] = useState('');
     const [categoria, setCategoria] = useState('');
     const [cuit, setCuit] = useState('');
-    const [provincia, setProvincia] = useState('');
-    const [localidad, setLocalidad] = useState('');
     const [imagen, setImagen] = useState(null); // Para manejar la imagen
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -34,12 +32,10 @@ const RegisterRestaurant = () => {
                 contraseña,
                 telefono,
                 categoria,
-                cuit,
-                provincia,
-                localidad
+                cuit
             });
 
-            const restaurantId = restaurantResponse.data.id; // Obtener el ID del restaurante creado
+            const restaurantId = restaurantResponse.data.idRestaurant; // Obtener el ID del restaurante creado
     
             if (!restaurantId) {
                 throw new Error("Error: No se ha recibido el ID del restaurante creado.");
@@ -90,12 +86,6 @@ const RegisterRestaurant = () => {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Control type="text" placeholder="CUIT" value={cuit} onChange={(e) => setCuit(e.target.value)} />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control type="text" placeholder="Provincia" value={provincia} onChange={(e) => setProvincia(e.target.value)} />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control type="text" placeholder="Localidad" value={localidad} onChange={(e) => setLocalidad(e.target.value)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Sube una imagen de tu restaurante</Form.Label>

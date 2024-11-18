@@ -11,8 +11,6 @@ const RegisterClient = () => {
     const [telefono, setTelefono] = useState('');
     const [direccion, setDireccion] = useState('');
     const [contraseña, setContraseña] = useState('');
-    const [provincia, setProvincia] = useState('');
-    const [localidad, setLocalidad] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
@@ -26,9 +24,7 @@ const RegisterClient = () => {
                 email,
                 telefono,
                 direccion,
-                contraseña,
-                localidad,
-                provincia
+                contraseña
             });
             // Aquí podrías redirigir al usuario a otra página después de registrarse
             navigate('/LogInClient'); // Redirige a la página de inicio de sesión
@@ -58,12 +54,6 @@ const RegisterClient = () => {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Control type="password" placeholder="Contraseña" value={contraseña} onChange={(e) => setContraseña(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control type="text" placeholder="Localidad" value={localidad} onChange={(e) => setLocalidad(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control type="text" placeholder="Provincia" value={provincia} onChange={(e) => setProvincia(e.target.value)}/>
                 </Form.Group>
                 <div className="d-grid">
                     <Button variant="primary" size="lg" type="submit">Registrarme</Button>
