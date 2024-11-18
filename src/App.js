@@ -19,40 +19,25 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
         return (
-        <BrowserRouter>
-        <Routes>
-                <Route  path='/'
-                        element={<Welcome/>} />
-                <Route  path='/LogInClient'
-                        element={<LogInCliente/>} />
-                <Route  path='/LogInRestaurant'
-                        element={<LogInRestaurant/>} />
-                <Route  path='/RegisterClient'
-                        element={<RegisterClient/>} />
-                <Route  path='/RegisterRestaurant'
-                        element={<RegisterRestaurant/>} />
-                <Route  path='/Catalog'
-                        element={<Catalog/>} />
-                <Route  path='/Reserve'
-                        element={<Reserve/>} />
-                <Route  path='/Carte'
-                        element={<Carte/>} />
-                <Route  path='/Pay'
-                        element={<Pay/>} />
-                <Route  path='/Reserves/'
-                        element={<Reserves/>} />
-                <Route  path='/EditRestaurant/'
-                        element={<EditRestaurant/>} />
-                <Route  path='/EditTables'
-                        element={<EditTables/>} />
-                <Route  path='/EditCarte'
-                        element={<EditCarte/>} />
-                <Route  path='/Plates'
-                        element={<Plates/>} />
-                <Route  path='/Drinks'
-                        element={<Drinks/>} />
-        </Routes>
-        </BrowserRouter>
+                <BrowserRouter>
+                <Routes>
+                        <Route path='/' element={<Welcome />} />
+                        <Route path='/LogInClient' element={<LogInCliente />} />
+                        <Route path='/LogInRestaurant' element={<LogInRestaurant />} />
+                        <Route path='/RegisterClient' element={<RegisterClient />} />
+                        <Route path='/RegisterRestaurant' element={<RegisterRestaurant />} />
+                        <Route path='/Catalog' element={<Catalog />} />
+                        <Route path='/Reserve/:id' element={<Reserve />} />
+                        <Route path='/Carte/:id' element={<Carte />} /> {/* Agregar la ruta para Carte */}
+                        <Route path='/Pay' element={<Pay />} />
+                        <Route path='/Reserves' element={<Reserves />} />
+                        <Route path='/EditRestaurant' element={<EditRestaurant />} />
+                        <Route path='/EditTables' element={<EditTables />} />
+                        <Route path='/EditCarte' element={<EditCarte />} />
+                        <Route path='/Plates' element={<Plates />} />
+                        <Route path='/Drinks' element={<Drinks />} />
+                </Routes>
+                </BrowserRouter>
         );
 }
 

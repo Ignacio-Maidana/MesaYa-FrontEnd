@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Estilo para las imágenes en los cards de restaurantes */
+.card-img-top {
+  width: 100%; /* ancho fijo para todas las imágenes */
+  height: 200px; /* altura fija para todas las imágenes */
+}
+
+/* Estilo para el card de restaurante */
+.restaurant-card {
+  max-width: 300px; /* ancho máximo para el card */
+  margin: 1rem auto; /* centrar el card */
+}
+
+/* Para la imagen en el formulario de edición */
+.img-thumbnail {
+  max-width: 300px; /* ancho máximo */
+  height: auto; /* mantiene la proporción */
+  margin-bottom: 1rem;
+}
+
+/* Para imágenes en general */
+img {
+  max-width: 100%;
+  height: auto;
+}

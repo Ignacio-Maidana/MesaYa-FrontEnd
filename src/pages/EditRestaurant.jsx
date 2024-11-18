@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { Container, Form, Button, Image } from 'react-bootstrap';
+import '../index.css';
 
 const EditRestaurant = () => {
     const [nombre, setNombre] = useState('');
@@ -119,7 +120,9 @@ const EditRestaurant = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Foto del Restaurant</Form.Label>
                     {imagen && typeof imagen === 'string' ? (
-                        <Image src={imagen} thumbnail className="mb-2" />
+                        <div className="text-center">
+                            <Image src={imagen} thumbnail className="img-thumbnail" />
+                        </div>
                     ) : (
                         <p>No hay imagen disponible</p>
                     )}

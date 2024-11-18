@@ -63,6 +63,7 @@ const EditTables = () => {
                 cantidadPersonas: parseInt(cantidadPersonas, 10),
                 idRestaurant: restaurantId // Vincular la mesa con el restaurante logueado
             };
+            console.log('Datos a enviar:', mesaData); // Para debugging
 
             if (isAddingNew) {
                 await axios.post("http://localhost:8000/api/mesas", mesaData);
